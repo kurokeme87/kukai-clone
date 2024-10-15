@@ -1,101 +1,124 @@
-import Image from "next/image";
+// import Layout from "@/components/layout";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div>
+      <div className="container w-full mx-auto px-4 sm:px-6  md:px-[30px] py-12">
+        <div className="lg:flex lg:items-start lg:justify-between lg:mt-[70px] w-full">
+          <div className="lg:w-1/2 h-full">
+            <h1 className="text-4xl font-[520] lg:text-left text-center text-gray-900 sm:text-5xl md:text-[42px]">
+              A Secure Home <br /> for your Digital Assets
+            </h1>
+            <p className="mt-3  lg:text-left text-center lg:mx-auto text-lg text-gray-500 sm:text-xl md:mt-8 md:max-w-3xl">
+              Manage your digital assets and seamlessly <br /> connect with
+              experiences and apps on Tezos.
+            </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <div className="lg:hidden flex items-center justify-center  pt-[50px]">
+              <div className="text-center">
+                <p className="text-gray-700 text-lg ">Sign in with social:</p>
+                <div className="flex flex-col items-center gap-3 mt-5">
+                  <div className="flex items-center gap-4 px-4 py-3 bg-white rounded-full">
+                    <img src="/kukai/google-logo.svg" className="w-5" />
+                    <p className="text-gray-700 text-sm font-semibold">
+                      Continue with google
+                    </p>
+                  </div>
+
+                  <div className="flex ">
+                    <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+                      <img src="/kukai/facebook-logo.svg" className="w-9" />
+                    </div>
+                    <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+                      <img src="/kukai/twitter-logo.svg" className="w-9" />
+                    </div>
+                    <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+                      <img src="/kukai/reddit-logo.svg" className="w-9" />
+                    </div>
+                    <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+                      <img src="/kukai/email-logo-start.svg" className="w-9" />
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <p className="text-gray-700 text-lg ">Get Kukai app:</p>
+                  <div className="flex mt-5">
+                    <div className="flex items-center justify-center gap-1 py-3 px-10 bg-white rounded-2xl">
+                      <img
+                        src="/kukai/download-app-store-light.svg"
+                        className="w-[120px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
+            <div className="rounded-md shadow">
+              <Link
+                href="/create-wallet"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
+              >
+                Create New Wallet
+              </Link>
+            </div>
+            <div className="mt-3 sm:mt-0 sm:ml-3">
+              <Link
+                href="/import-wallet"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10"
+              >
+                Import Wallet
+              </Link>
+            </div>
+          </div> */}
+          </div>
+          <div className="mt-10 lg:mt-0 lg:w-1/2 flex lg:justify-end justify-center">
+            <img
+              src="/kukai/landing-hero.png"
+              alt="Digital Assets Illustration"
+              className="lg:w-[70%]  w-[70%] h-auto"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div className="lg:mt-[-250px] md:mt-[-300px] mt-[-200px] bg-gradient-to-b h-[50vh] from-[#dbe2e7] to-[#f6f7f9]">
+        <div className="bg-[#d6dbe3] p-2"></div>
+        <div className="lg:block hidden px-[180px] pt-[50px]">
+          <p className="text-gray-700 text-lg ">Sign in with social:</p>
+          <div className="flex items-center gap-3 mt-5">
+            <div className="flex items-center gap-4 px-4 py-3 bg-white rounded-full">
+              <img src="/kukai/google-logo.svg" className="w-5" />
+              <p className="text-gray-700 text-sm font-semibold">
+                Continue with google
+              </p>
+            </div>
+            <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+              <img src="/kukai/facebook-logo.svg" className="w-9" />
+            </div>
+            <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+              <img src="/kukai/twitter-logo.svg" className="w-9" />
+            </div>
+            <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+              <img src="/kukai/reddit-logo.svg" className="w-9" />
+            </div>
+            <div className="flex items-center gap-4 p-2 bg-white rounded-full">
+              <img src="/kukai/email-logo-start.svg" className="w-9" />
+            </div>
+          </div>
+          <div className="mt-2">
+            <p className="text-gray-700 text-lg ">Get Kukai app:</p>
+            <div className="flex mt-5">
+              <div className="flex items-center justify-center gap-1 py-3 px-10 bg-white rounded-2xl">
+                <img
+                  src="/kukai/download-app-store-light.svg"
+                  className="w-[120px]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
