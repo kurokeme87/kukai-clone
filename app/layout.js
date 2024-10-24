@@ -16,7 +16,8 @@ const geistMono = localFont({
 export const metadata = {
   title: "Kukai Wallet",
   description:
-    "A Secure Home for your digital assets. Seamlessly connect with experiences and apps on Tezos.",
+    "Kukai Wallet is a web wallet that offers easy management of digital assets, and connects you effortlessly with Tezos dApps like youves.",
+  keywords: "kukai wallet",
 };
 
 export default function RootLayout({ children }) {
