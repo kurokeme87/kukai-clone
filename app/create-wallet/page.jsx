@@ -23,6 +23,10 @@ export default function CreateWallet() {
     }
   }, [step]);
 
+
+
+
+
   const handleNext = () => {
     if (step === 1 && verificationWord !== secretPhrase[2]) {
       alert("Incorrect verification word");
@@ -43,6 +47,7 @@ export default function CreateWallet() {
       pwd
     );
   };
+
 
   const renderStep = () => {
     switch (step) {
@@ -175,9 +180,8 @@ export default function CreateWallet() {
                 </div>
               </div>
               <div
-                className={`${
-                  password === "" && "hidden"
-                } flex justify-center mt-4`}
+                className={`${password === "" && "hidden"
+                  } flex justify-center mt-4`}
               >
                 <button
                   className="w-[45%] bg-[#505bf0] text-white rounded-full py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -213,9 +217,8 @@ export default function CreateWallet() {
                 </div>
               </div>
               <div
-                className={`${
-                  password === "" && "hidden"
-                } flex justify-center mt-4`}
+                className={`${password === "" && "hidden"
+                  } flex justify-center mt-4`}
               >
                 <button className="w-[54%] text-[11px] bg-[#505bf0] text-white rounded-full py-3 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                   DOWNLOAD
@@ -242,9 +245,8 @@ export default function CreateWallet() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className={` rounded-full ${
-              i === step ? "bg-[#505bf0] w-3 h-3" : "bg-gray-300 w-2 h-2"
-            }`}
+            className={` rounded-full ${i === step ? "bg-[#505bf0] w-3 h-3" : "bg-gray-300 w-2 h-2"
+              }`}
           />
         ))}
       </div>
