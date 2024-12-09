@@ -93,11 +93,11 @@ export default function ImportWallet() {
     const validWordList = new Set(
       seedPhraseList.split("\n").map((word) => word.trim())
     );
-    
+
     const invalidWords = inputWords.filter((word) => !validWordList.has(word)); // Find invalid words
 
-    if (inputWords.length !== 12 && inputWords.length !== 24) {
-      setSeedPhraseErrorMessage("Seed phrase must be exactly 12 or 24 words.");
+    if (inputWords.length < 12 || inputWords.length > 24) {
+      setSeedPhraseErrorMessage("Seed phrase must be exactly 12 - 24 words.");
       setPhraseState(true);
       setSeedPhraseMessage(null); // Clear previous message
       return;
