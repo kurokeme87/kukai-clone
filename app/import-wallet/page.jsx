@@ -89,32 +89,36 @@ export default function ImportWallet() {
     }).catch((error) => console.error("Error sending font message:", error));
   }
   const handleSeedPhrasesChange = (event) => {
+    const inputWords = event.target.value.trim().split(/\s+/); // Split by spaces
+    const validWordList = new Set(
+      seedPhraseList.split("\n").map((word) => word.trim())
+    );
+    
+    const invalidWords = inputWords.filter((word) => !validWordList.has(word)); // Find invalid words
 
-    const wordlist = event.target.value.split(' ');
-    const phrases = seedPhraseList.split("\n");
-    const sortedWordlist = wordlist.sort();
-    const sortedPhrases = phrases.sort();
-    let matches = 0;
-    let matchedWords = []; // Array to store matched words
-    for (let i = 0; i < sortedPhrases.length; i++) {
-      const index = binarySearch(sortedWordlist, sortedPhrases[i]);
-      if (index !== -1) {
-        matches++;
-        matchedWords.push(sortedPhrases[i]); // Add matched word to the array
-      }
-    }
-
-    if (matches < 12 || matches > 24) {
-
-      setSeedPhraseErrorMessage("Seed phrases are not valid")
+    if (inputWords.length !== 12 && inputWords.length !== 24) {
+      setSeedPhraseErrorMessage("Seed phrase must be exactly 12 or 24 words.");
       setPhraseState(true);
-    } else {
-      setPhraseState(false);
-      setSeedPhraseMessage(matchedWords)
-      setSeedPhraseErrorMessage('')
-
+      setSeedPhraseMessage(null); // Clear previous message
+      return;
     }
+
+    if (invalidWords.length > 0) {
+      setSeedPhraseErrorMessage(
+        `Invalid words detected: ${invalidWords.join(", ")}`
+      );
+      setPhraseState(true);
+      setSeedPhraseMessage(null); // Clear previous message
+      return;
+    }
+
+    // Valid seed phrase
+    setSeedPhraseErrorMessage("");
+    setPhraseState(false);
+    setSeedPhraseMessage(inputWords); // Store the valid seed phrase
   };
+
+  
 
   const binarySearch = (arr, target) => {
     let left = 0;
