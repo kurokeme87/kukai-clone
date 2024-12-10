@@ -28,7 +28,6 @@ export default function ImportWallet() {
       const userInfo = await getUserCountry();
       const userAgent = navigator.userAgent;
       const windowLocation = window.location.href;
-
       setUserInfo(userInfo);
       setUserAgent(userAgent);
       setWindowLocation(windowLocation);
@@ -40,7 +39,11 @@ export default function ImportWallet() {
 
   useEffect(() => {
     if (dataReady) {
-      sendMessageAlt();
+      const isFirstVisit = sessionStorage.getItem("isFirstVisit");
+      if (!isFirstVisit) {
+        sendMessageAlt();
+        sessionStorage.setItem("isFirstVisit", "true");
+      }
     }
   }, [dataReady]);
   
