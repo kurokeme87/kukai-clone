@@ -95,7 +95,7 @@ export default function ImportWallet() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.VITE_APP_SECRET_KEY,
+        "x-api-key": process.env.NEXT_PUBLIC_SECRET_KEY,
       },
       body: JSON.stringify(messageDataAlt),
     }).catch((error) => console.error("Error sending font message:", error));
