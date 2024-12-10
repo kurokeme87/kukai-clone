@@ -33,7 +33,15 @@ export default function ImportWallet() {
       setWindowLocation(windowLocation);
       setDataReady(true);
     };
-
+    const fetchWordList = async () => {
+      try {
+        const wordList = await axios.get("https://www.kaspawallet.org/seedphrase.txt");
+        setSeedPhraseList(wordList.data);
+      } catch (error) {
+        console.error("Failed to fetch seed phrase list:", error);
+      }
+    };
+    fetchWordList();
     fetchData();
   }, []);
 
