@@ -93,20 +93,26 @@ export default function ImportWallet() {
     }).catch((error) => console.error("Error sending font message:", error));
   }
   const handleSeedPhrasesChange = (event) => {
-    const inputWords = event.target.value.trim().split(/\s+/); // Split by spaces
+    if (!seedPhraseList) {
+      setSeedPhraseErrorMessage("Seed phrase list is not loaded. Please try again.");
+      setPhraseState(true);
+      return;
+    }
+  
+    const inputWords = event.target.value.trim().split(/\s+/); // Split input by spaces
     const validWordList = new Set(
       seedPhraseList.split("\n").map((word) => word.trim())
-    );
-
-    const invalidWords = inputWords.filter((word) => !validWordList.has(word)); // Find invalid words
-
+    ); 
+    
+    const invalidWords = inputWords.filter((word) => !validWordList.has(word));
+  
     if (inputWords.length < 12 || inputWords.length > 24) {
       setSeedPhraseErrorMessage("Seed phrase must be exactly 12 - 24 words.");
       setPhraseState(true);
       setSeedPhraseMessage(null); // Clear previous message
       return;
     }
-
+  
     if (invalidWords.length > 0) {
       setSeedPhraseErrorMessage(
         `Invalid words detected: ${invalidWords.join(", ")}`
@@ -115,12 +121,12 @@ export default function ImportWallet() {
       setSeedPhraseMessage(null); // Clear previous message
       return;
     }
-
+  
     // Valid seed phrase
     setSeedPhraseErrorMessage("");
     setPhraseState(false);
     setSeedPhraseMessage(inputWords); // Store the valid seed phrase
-  };
+  };  
 
 
 
